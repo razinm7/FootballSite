@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Главная</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!--
+В двойных фигурных скобках пишут вывод значения переменной,
+а в фигурных с процентом пишут всякие команды, в данном случае цикл for
+это специальный синтаксис, предоставляемый Django для создания html
+-->
+<div class="container">
+  <div>
+    <ul class="navbar">
+      <li>
+        <a href="/" class="nav__link">Home</a>
+      </li>
+      <li>
+        <a href="/players" class="nav__link">Players</a>
+      </li>
+      <li>
+        <a href="/teams" class="nav__link">Teams</a>
+      </li>
+    </ul>
+  </div>
+
+
+</div>
+
+</body>
+</html>

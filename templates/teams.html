@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Клубы</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!--
+В двойных фигурных скобках пишут вывод значения переменной,
+а в фигурных с процентом пишут всякие команды, в данном случае цикл for
+это специальный синтаксис, предоставляемый Django для создания html
+-->
+<div class="container">
+  <div>
+    <ul class="navbar">
+      <li>
+        <a href="/" class="nav__link">Home</a>
+      </li>
+      <li>
+        <a href="/players" class="nav__link">Players</a>
+      </li>
+      <li>
+        <a href="/teams" class="nav__link">Teams</a>
+      </li>
+    </ul>
+  </div>
+
+  <section class="table-container">
+    <table class="table">
+      <thead class="table__header">
+        <tr>
+          <th width="5%">id</th>
+          <th width="15%">Название клуба</th>
+          <th width="15%">Год основания</th>
+          <th width="15%">Домашний стадион</th>
+          <th width="20%">Тренер</th>
+          <th width="20%">Рейтинг УЕФА</th>
+          <th width="10%">Эмблема</th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+      {% for team in all_teams %}
+        <tr>
+          <td width="5%">{{ team.id }}</td>
+          <td width="15%">{{ team.team_name }}</td>
+          <td width="15%">{{ team.est_year }}</td>
+          <td width="15%">{{ team.stadium }}</td>
+          <td width="20%">{{ team.curr_trainer }}</td>
+          <td width="20%">{{ team.UEFA_rate }}</td>
+          <td width="10%">
+            <img src="{% if team.emblem %}
+                            {{ team.emblem.url }}
+                                {% else %} /media/gallery/default_photo.png
+                              {% endif %}" width="50px"/>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <form method="POST" class="post-form" enctype="multipart/form-data">
+      <h1>Добавление нового клуба</h1>
+      {% csrf_token %}
+      <div class="form-group">
+        {{ team_form.team_name }}
+        <label for="{{ team_form.team_name.id_for_label }}" class="control-label">Название клуба:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ team_form.est_year }}
+        <label for="{{ team_form.est_year.id_for_label }}" class="control-label">Год основания:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ team_form.stadium }}
+        <label for="{{ team_form.stadium.id_for_label }}" class="control-label">Домашний стадион:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ team_form.curr_trainer }}
+        <label for="{{ team_form.curr_trainer.id_for_label }}" class="control-label">Тренер:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ team_form.UEFA_rate }}
+        <label for="{{ team_form.UEFA_rate.id_for_label }}" class="control-label">Рейтинг УЕФА:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        <div>
+          <label for="{{ team_form.emblem.id_for_label }}" class="file-upload__label"> Эмблема:
+        </label>
+        </div>
+        {{ team_form.emblem }}
+      </div>
+
+
+
+{#      {{ player_form.as_p }}#}
+      <!-- вместо вот этой строчки Django подставит поля ввода данных в форму, as_p означает, что форма выводится в виде параграфа. -->
+      <div class="button__container">
+        <button type="submit" class="button">Отправить</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+</body>
+</html>

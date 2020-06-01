@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Игроки</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!--
+В двойных фигурных скобках пишут вывод значения переменной,
+а в фигурных с процентом пишут всякие команды, в данном случае цикл for
+это специальный синтаксис, предоставляемый Django для создания html
+-->
+<div class="container">
+  <div>
+    <ul class="navbar">
+      <li>
+        <a href="/" class="nav__link">Home</a>
+      </li>
+      <li>
+        <a href="/players" class="nav__link">Players</a>
+      </li>
+      <li>
+        <a href="/teams" class="nav__link">Teams</a>
+      </li>
+    </ul>
+  </div>
+
+  <section class="table-container">
+    <table class="table">
+      <thead class="table__header">
+        <tr>
+          <th width="5%">id</th>
+          <th width="15%">Имя игрока</th>
+          <th width="15%">Дата рождения</th>
+          <th width="15%">Страна</th>
+          <th width="20%">Текущий клуб</th>
+          <th width="20%">Позиция</th>
+          <th width="10%">Фото</th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+      {% for player in all_players %}
+        <tr>
+          <td width="5%">{{ player.id }}</td>
+          <td width="15%">{{ player.player_name }}</td>
+          <td width="15%">{{ player.player_dob }}</td>
+          <td width="15%">{{ player.player_country }}</td>
+          <td width="20%">{{ player.player_curr_team_link }}</td>
+          <td width="20%">{{ player.player_position }}</td>
+          <td width="10%">
+            <img src="{% if player.player_photo %}
+                            {{ player.player_photo.url }}
+                                {% else %} /media/gallery/default_photo.png
+                              {% endif %}" width="50px"/>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <form method="POST" class="post-form" enctype="multipart/form-data">
+      <h1>Добавление нового игрока</h1>
+      {% csrf_token %}
+      <div class="form-group">
+        {{ player_form.player_name }}
+        <label for="{{ player_form.player_name.id_for_label }}" class="control-label">Имя игрока:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ player_form.player_dob }}
+        <label for="{{ player_form.player_dob.id_for_label }}" class="control-label">Дата рождения (гггг-мм-дд):
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ player_form.player_country }}
+        <label for="{{ player_form.player_country.id_for_label }}" class="control-label">Страна:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ player_form.player_curr_team_link }}
+        <label for="{{ player_form.player_curr_team_link.id_for_label }}" class="control-label">Текущий клуб:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        {{ player_form.player_position }}
+        <label for="{{ player_form.player_position.id_for_label }}" class="control-label">Позиция:
+        </label>
+        <i class="bar"></i>
+      </div>
+
+      <div class="form-group">
+        <div>
+          <label for="{{ player_form.player_photo.id_for_label }}" class="file-upload__label"> Фото игрока:
+        </label>
+        </div>
+        {{ player_form.player_photo }}
+      </div>
+
+
+
+{#      {{ player_form.as_p }}#}
+      <!-- вместо вот этой строчки Django подставит поля ввода данных в форму, as_p означает, что форма выводится в виде параграфа. -->
+      <div class="button__container">
+        <button type="submit" class="button">Отправить</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+</body>
+</html>

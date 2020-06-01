@@ -1,0 +1,15 @@
+.table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  overflow: scroll;
+  height: 700px;
+}
+
+.table__header {
+  background-color: bisque;
+  font-size: 16px;
+}
+
+.table__body {
+  overflow: auto;
+}
